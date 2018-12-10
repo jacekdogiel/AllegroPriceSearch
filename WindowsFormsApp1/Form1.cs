@@ -50,6 +50,7 @@ namespace WindowsFormsApp1
                    ));
                 }
             }
+            else { results.Invoke(new Action(() => results.Text = "Nie ma takiej części")); }
         }
 
         string getSource(string url)
