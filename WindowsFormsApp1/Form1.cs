@@ -38,14 +38,17 @@ namespace WindowsFormsApp1
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(source);
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff'] | //h2[@class='_4462670  ']");
-            
-            foreach (HtmlNode node in nodes)
+
+            if (nodes != null)
             {
-                this.Invoke(new MethodInvoker(delegate
+                foreach (HtmlNode node in nodes)
                 {
-                    results.Text = results.Text + node.InnerText + Environment.NewLine;
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        results.Text = results.Text + node.InnerText + Environment.NewLine;
+                    }
+                   ));
                 }
-               ));
             }
         }
 
