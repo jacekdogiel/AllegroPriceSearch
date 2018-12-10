@@ -69,5 +69,60 @@ namespace WindowsFormsApp1
             }
             return "";
         }
+        private void results_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+                MenuItem menuItem = new MenuItem("Cut");
+                menuItem.Click += new EventHandler(CutAction);
+                contextMenu.MenuItems.Add(menuItem);
+                menuItem = new MenuItem("Copy");
+                menuItem.Click += new EventHandler(CopyAction);
+                contextMenu.MenuItems.Add(menuItem);
+                menuItem = new MenuItem("Paste");
+                menuItem.Click += new EventHandler(PasteAction);
+                contextMenu.MenuItems.Add(menuItem);
+                menuItem = new MenuItem("Select All");
+                menuItem.Click += new EventHandler(SelectAll);
+                contextMenu.MenuItems.Add(menuItem);
+                results.ContextMenu = contextMenu;
+            }
+        }
+
+        void CutAction(object sender, EventArgs e)
+        {
+            results.Cut();
+        }
+
+        void CopyAction(object sender, EventArgs e)
+        {
+            Clipboard.SetText(results.SelectedText);
+        }
+
+        void PasteAction(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsText())
+            {
+                results.Text += Clipboard.GetText(TextDataFormat.Text).ToString();
+            }
+        }
+
+        void SelectAll(object sender, EventArgs e)
+        {
+            results.SelectAll();
+            results.Focus();
+        }
+
+        private void partNumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Thread t = new Thread(() => Start());
+                t.Start();
+                part = partNumber.Text;
+                results.Text = "";
+            }
+        }
     }
 }

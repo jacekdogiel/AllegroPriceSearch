@@ -35,7 +35,7 @@
             // 
             // strButton
             // 
-            this.strButton.Location = new System.Drawing.Point(12, 12);
+            this.strButton.Location = new System.Drawing.Point(362, 12);
             this.strButton.Name = "strButton";
             this.strButton.Size = new System.Drawing.Size(75, 23);
             this.strButton.TabIndex = 0;
@@ -50,6 +50,7 @@
             this.results.Size = new System.Drawing.Size(694, 384);
             this.results.TabIndex = 1;
             this.results.Text = "";
+            this.results.MouseDown += new System.Windows.Forms.MouseEventHandler(this.results_MouseDown);
             // 
             // partNumber
             // 
@@ -57,6 +58,7 @@
             this.partNumber.Name = "partNumber";
             this.partNumber.Size = new System.Drawing.Size(262, 20);
             this.partNumber.TabIndex = 3;
+            this.partNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.partNumber_KeyDown);
             // 
             // Form1
             // 
