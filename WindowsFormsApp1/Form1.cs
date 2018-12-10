@@ -59,7 +59,7 @@ namespace WindowsFormsApp1
                 WebClient mywebClient = new WebClient();
                 mywebClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
                 byte[] myDataBuffer = mywebClient.DownloadData(url);
-                string source = Encoding.ASCII.GetString(myDataBuffer);
+                string source = Encoding.UTF8.GetString(myDataBuffer);
 
                 return source;
             }
@@ -123,6 +123,11 @@ namespace WindowsFormsApp1
                 part = partNumber.Text;
                 results.Text = "";
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
