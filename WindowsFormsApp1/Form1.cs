@@ -15,8 +15,9 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        //nr czesci
         string part;
-        
+        string loginAllegro = System.Configuration.ConfigurationSettings.AppSettings["loginAllegro"];
         public Form1()
         {
             InitializeComponent();
@@ -27,26 +28,31 @@ namespace WindowsFormsApp1
             //nowy watek zeby nie blokowac interfejsu
             Thread t = new Thread(()=>Start());
             t.Start();
+            //pobranie nr czesci
             part = partNumber.Text;
+            //czyszczenie textboxa
             results.Text = "";
         }
         void Start()
         {
+            //pobranie danych z aukcji allegro
             string url = "https://allegro.pl/kategoria/czesci-samochodowe-620?string=" + part + "&stan=u%C5%BCywane&order=p&bmatch=baseline-cl-n-aut-1-3-1123";
-            string url2 = "https://allegro.pl/uzytkownik/VAG24?string=" + part + "&order=m&bmatch=cl-n-eng-global-uni-1-3-1130";
+            //pobranie aukcji z  danego konta allegro VAG24
+            string url2 = "https://allegro.pl/uzytkownik/"+loginAllegro+ "?string=" + part + "&order=m&bmatch=cl-n-eng-global-uni-1-3-1130";
             string source = getSource(url);
             string source2 = getSource(url2);
 
             if (source == "") return;
             if (source2 == "") return;
 
+            //pobranie kodu html
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(source);
 
             HtmlAgilityPack.HtmlDocument doc2 = new HtmlAgilityPack.HtmlDocument();
             doc2.LoadHtml(source2);
 
-            
+            //pobranie tytułów aukcji i cen
             HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff']");
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff'] | //h2[@class='_4462670  ']");
             HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='_4462670  ']");
@@ -57,6 +63,7 @@ namespace WindowsFormsApp1
                 {
                     this.Invoke(new MethodInvoker(delegate
                     {
+                        //wyswietlenie tytułów aukcji i cen
                         results.Text = results.Text + node.InnerText + Environment.NewLine;
                     }
                    ));
@@ -71,11 +78,13 @@ namespace WindowsFormsApp1
 
             if (countParts2 != null)
             {
+                //wyswietlenie ilosci aukcji danego konta z danym nr czesci
                 label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()+"       Nasze aukcje:"+ countParts2.Count.ToString()));
             }
 
         }
 
+        //funkcja do pobierania dancyh
         string getSource(string url)
         {
             try
@@ -93,6 +102,7 @@ namespace WindowsFormsApp1
             }
             return "";
         }
+
         private void results_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
@@ -138,6 +148,7 @@ namespace WindowsFormsApp1
             results.Focus();
         }
 
+        //funkcja do szukania po nacisnieciu ENTER
         private void partNumber_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
