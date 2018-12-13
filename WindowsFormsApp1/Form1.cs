@@ -32,12 +32,24 @@ namespace WindowsFormsApp1
         }
         void Start()
         {
-            string url = "https://allegro.pl/listing?string=" + part + "&order=p&bmatch=cl-n-eng-global-uni-1-3-1130";
+            string url = "https://allegro.pl/kategoria/czesci-samochodowe-620?string=" + part + "&stan=u%C5%BCywane&order=p&bmatch=baseline-cl-n-aut-1-3-1123";
+            string url2 = "https://allegro.pl/uzytkownik/VAG24?string=" + part + "&order=m&bmatch=cl-n-eng-global-uni-1-3-1130";
             string source = getSource(url);
+            string source2 = getSource(url2);
+
             if (source == "") return;
+            if (source2 == "") return;
+
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(source);
+
+            HtmlAgilityPack.HtmlDocument doc2 = new HtmlAgilityPack.HtmlDocument();
+            doc2.LoadHtml(source2);
+
+            
+            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff']");
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff'] | //h2[@class='_4462670  ']");
+            HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='_4462670  ']");
 
             if (nodes != null)
             {
@@ -51,6 +63,17 @@ namespace WindowsFormsApp1
                 }
             }
             else { results.Invoke(new Action(() => results.Text = "Nie ma takiej części")); }
+
+            if (nodes != null)
+            {
+                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()));
+            }
+
+            if (countParts2 != null)
+            {
+                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()+"       Nasze aukcje:"+ countParts2.Count.ToString()));
+            }
+
         }
 
         string getSource(string url)
