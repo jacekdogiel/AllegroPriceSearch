@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Threading;
 using System.Net;
+using System.Configuration ;
+
 
 namespace WindowsFormsApp1
 {
@@ -17,7 +19,7 @@ namespace WindowsFormsApp1
     {
         //nr czesci
         string part;
-        string loginAllegro = System.Configuration.ConfigurationSettings.AppSettings["loginAllegro"];
+        string loginAllegro = ConfigurationManager.AppSettings["loginAllegro"];
         public Form1()
         {
             InitializeComponent();
@@ -25,18 +27,19 @@ namespace WindowsFormsApp1
 
         private void strButton_Click(object sender, EventArgs e)
         {
+            //czyszczenie textboxa
+            results.Clear();
             //nowy watek zeby nie blokowac interfejsu
             Thread t = new Thread(()=>Start());
             t.Start();
             //pobranie nr czesci
             part = partNumber.Text;
-            //czyszczenie textboxa
-            results.Text = "";
+            
         }
         void Start()
         {
             //pobranie danych z aukcji allegro
-            string url = "https://allegro.pl/kategoria/czesci-samochodowe-620?string=" + part + "&stan=u%C5%BCywane&order=p&bmatch=baseline-cl-n-aut-1-3-1123";
+            string url = "https://allegro.pl/kategoria/motoryzacja?string=" + part + "&order=p&bmatch=baseline-cl-n-aut-1-3-1123";
             //pobranie aukcji z  danego konta allegro VAG24
             string url2 = "https://allegro.pl/uzytkownik/"+loginAllegro+ "?string=" + part + "&order=m&bmatch=cl-n-eng-global-uni-1-3-1130";
             string source = getSource(url);
@@ -76,7 +79,7 @@ namespace WindowsFormsApp1
                 label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()));
             }
 
-            if (countParts2 != null)
+            if (countParts2 != null & nodes != null)
             {
                 //wyswietlenie ilosci aukcji danego konta z danym nr czesci
                 label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()+"       Nasze aukcje:"+ countParts2.Count.ToString()));
@@ -85,10 +88,11 @@ namespace WindowsFormsApp1
         }
 
         //funkcja do pobierania dancyh
-        string getSource(string url)
+        public static string getSource(string url)
         {
             try
             {
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                 WebClient mywebClient = new WebClient();
                 mywebClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
                 byte[] myDataBuffer = mywebClient.DownloadData(url);
@@ -98,9 +102,9 @@ namespace WindowsFormsApp1
             }
             catch(Exception ex)
             {
+                MessageBox.Show(ex.ToString(), "Błąd połączenia");
                 return "";
             }
-            return "";
         }
 
         private void results_MouseDown(object sender, MouseEventArgs e)
@@ -153,10 +157,10 @@ namespace WindowsFormsApp1
         {
             if (e.KeyCode == Keys.Enter)
             {
+                results.Clear();
                 Thread t = new Thread(() => Start());
                 t.Start();
                 part = partNumber.Text;
-                results.Text = "";
             }
         }
 
