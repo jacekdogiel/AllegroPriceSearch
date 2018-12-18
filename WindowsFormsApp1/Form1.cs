@@ -11,7 +11,7 @@ using HtmlAgilityPack;
 using System.Threading;
 using System.Net;
 using System.Configuration ;
-
+using System.Net.Http;
 
 namespace WindowsFormsApp1
 {
@@ -44,9 +44,6 @@ namespace WindowsFormsApp1
             string url2 = "https://allegro.pl/uzytkownik/"+loginAllegro+ "?string=" + part + "&order=m&bmatch=cl-n-eng-global-uni-1-3-1130";
             string source = getSource(url);
             string source2 = getSource(url2);
-
-            if (source == "") return;
-            if (source2 == "") return;
 
             //pobranie kodu html
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -93,12 +90,7 @@ namespace WindowsFormsApp1
             try
             {
                 ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                WebClient mywebClient = new WebClient();
-                mywebClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-                byte[] myDataBuffer = mywebClient.DownloadData(url);
-                string source = Encoding.UTF8.GetString(myDataBuffer);
-
-                return source;
+                return new HttpClient().GetAsync(url).Result.Content.ReadAsStringAsync().Result;
             }
             catch(Exception ex)
             {
