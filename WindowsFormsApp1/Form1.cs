@@ -56,9 +56,9 @@ namespace WindowsFormsApp1
             doc2.LoadHtml(source2);
 
             //pobranie tytułów aukcji i cen
-            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff']");
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='ecb7eff'] | //h2[@class='_4462670  ']");
-            HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='_4462670  ']");
+            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//span[@class='_611a83b']");
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='_611a83b'] | //h2[@class='ebc9be2  ']");
+            HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
 
             if (nodes != null)
             {
