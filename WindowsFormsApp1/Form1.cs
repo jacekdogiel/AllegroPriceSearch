@@ -74,13 +74,17 @@ namespace WindowsFormsApp1
             if (nodes != null)
             {
                 label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()));
+                nodes.Clear();
             }
 
             if (countParts2 != null & nodes != null)
             {
                 //wyswietlenie ilosci aukcji danego konta z danym nr czesci
                 label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()+"       Nasze aukcje:"+ countParts2.Count.ToString()));
+                countParts.Clear();
+                countParts2.Clear();
             }
+            part = "";
 
         }
 
