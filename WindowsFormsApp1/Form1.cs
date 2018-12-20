@@ -27,8 +27,6 @@ namespace WindowsFormsApp1
 
         private void strButton_Click(object sender, EventArgs e)
         {
-            //czyszczenie textboxa
-            results.Clear();
             //nowy watek zeby nie blokowac interfejsu
             Thread t = new Thread(()=>Start());
             t.Start();
@@ -53,23 +51,28 @@ namespace WindowsFormsApp1
             doc2.LoadHtml(source2);
 
             //pobranie tytułów aukcji i cen
-            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//span[@class='_611a83b']");
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//span[@class='_611a83b'] | //h2[@class='ebc9be2  ']");
+            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
+            HtmlNodeCollection nodes2 = doc.DocumentNode.SelectNodes("//span[@class='_611a83b']");
             HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
 
             if (nodes != null)
             {
-                foreach (HtmlNode node in nodes)
+                DataTable table = new DataTable();
+                table.Columns.Add("Opis");
+                table.Columns.Add("Cena");
+                for (int i = 0; i < nodes.Count - 1; i++)
                 {
-                    this.Invoke(new MethodInvoker(delegate
+                    if (nodes[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
-                        //wyswietlenie tytułów aukcji i cen
-                        results.Text = results.Text + node.InnerText + Environment.NewLine;
+                        table.Rows.Add(nodes[i].InnerText, nodes2[i].InnerText);
                     }
-                   ));
+
                 }
+                dataGridView1.Invoke(new Action(() => dataGridView1.DataSource = table));
+                dataGridView1.Invoke(new Action(() => dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells)));
             }
-            else { results.Invoke(new Action(() => results.Text = "Nie ma takiej części")); }
+            else { label2.Invoke(new Action(() => label2.Text = "Nie ma takiej części")); }
 
             if (nodes != null)
             {
@@ -103,49 +106,9 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void results_MouseDown(object sender, MouseEventArgs e)
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)
-            {
-                ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
-                MenuItem menuItem = new MenuItem("Cut");
-                menuItem.Click += new EventHandler(CutAction);
-                contextMenu.MenuItems.Add(menuItem);
-                menuItem = new MenuItem("Copy");
-                menuItem.Click += new EventHandler(CopyAction);
-                contextMenu.MenuItems.Add(menuItem);
-                menuItem = new MenuItem("Paste");
-                menuItem.Click += new EventHandler(PasteAction);
-                contextMenu.MenuItems.Add(menuItem);
-                menuItem = new MenuItem("Select All");
-                menuItem.Click += new EventHandler(SelectAll);
-                contextMenu.MenuItems.Add(menuItem);
-                results.ContextMenu = contextMenu;
-            }
-        }
-
-        void CutAction(object sender, EventArgs e)
-        {
-            results.Cut();
-        }
-
-        void CopyAction(object sender, EventArgs e)
-        {
-            Clipboard.SetText(results.SelectedText);
-        }
-
-        void PasteAction(object sender, EventArgs e)
-        {
-            if (Clipboard.ContainsText())
-            {
-                results.Text += Clipboard.GetText(TextDataFormat.Text).ToString();
-            }
-        }
-
-        void SelectAll(object sender, EventArgs e)
-        {
-            results.SelectAll();
-            results.Focus();
+            Clipboard.SetText(dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString());
         }
 
         //funkcja do szukania po nacisnieciu ENTER
@@ -153,7 +116,6 @@ namespace WindowsFormsApp1
         {
             if (e.KeyCode == Keys.Enter)
             {
-                results.Clear();
                 Thread t = new Thread(() => Start());
                 t.Start();
                 part = partNumber.Text;
@@ -164,5 +126,7 @@ namespace WindowsFormsApp1
         {
 
         }
+
+
     }
 }
