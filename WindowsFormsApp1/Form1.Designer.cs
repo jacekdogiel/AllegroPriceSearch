@@ -29,24 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.strButton = new System.Windows.Forms.Button();
             this.partNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Opis = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cena = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Link = new System.Windows.Forms.DataGridViewLinkColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // strButton
-            // 
-            this.strButton.Location = new System.Drawing.Point(280, 23);
-            this.strButton.Name = "strButton";
-            this.strButton.Size = new System.Drawing.Size(75, 23);
-            this.strButton.TabIndex = 0;
-            this.strButton.Text = "Szukaj";
-            this.strButton.UseVisualStyleBackColor = true;
-            this.strButton.Click += new System.EventHandler(this.strButton_Click);
             // 
             // partNumber
             // 
@@ -55,15 +47,16 @@
             this.partNumber.Size = new System.Drawing.Size(262, 20);
             this.partNumber.TabIndex = 3;
             this.partNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.partNumber_KeyDown);
+            this.partNumber.MouseDown += new System.Windows.Forms.MouseEventHandler(this.partNumber_MouseDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 13);
+            this.label1.Size = new System.Drawing.Size(171, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Wpisz numer części:";
+            this.label1.Text = "Wpisz numer części i wciśnij Enter:";
             // 
             // contextMenuStrip1
             // 
@@ -84,13 +77,38 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Opis,
+            this.Cena,
+            this.Link});
             this.dataGridView1.Location = new System.Drawing.Point(12, 72);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(563, 304);
             this.dataGridView1.TabIndex = 6;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
+            // 
+            // Opis
+            // 
+            this.Opis.HeaderText = "Opis";
+            this.Opis.Name = "Opis";
+            this.Opis.ReadOnly = true;
+            // 
+            // Cena
+            // 
+            this.Cena.HeaderText = "Cena";
+            this.Cena.Name = "Cena";
+            this.Cena.ReadOnly = true;
+            // 
+            // Link
+            // 
+            this.Link.HeaderText = "Link";
+            this.Link.Name = "Link";
+            this.Link.ReadOnly = true;
+            this.Link.Text = "Link";
+            this.Link.UseColumnTextForLinkValue = true;
             // 
             // Form1
             // 
@@ -101,7 +119,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.partNumber);
-            this.Controls.Add(this.strButton);
             this.Name = "Form1";
             this.Text = "Wyszukiwarka opisów i cen Allegro";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -112,13 +129,14 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button strButton;
         private System.Windows.Forms.TextBox partNumber;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Opis;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cena;
+        private System.Windows.Forms.DataGridViewLinkColumn Link;
     }
 }
 

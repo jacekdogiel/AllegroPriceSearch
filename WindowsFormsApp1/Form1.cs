@@ -12,6 +12,7 @@ using System.Threading;
 using System.Net;
 using System.Configuration ;
 using System.Net.Http;
+using System.Diagnostics;
 
 namespace WindowsFormsApp1
 {
@@ -20,22 +21,34 @@ namespace WindowsFormsApp1
         //nr czesci
         string part;
         string loginAllegro = ConfigurationManager.AppSettings["loginAllegro"];
+        DataTable table = new DataTable();
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void strButton_Click(object sender, EventArgs e)
+        //funkcja do szukania po nacisnieciu ENTER
+        private void partNumber_KeyDown(object sender, KeyEventArgs e)
         {
-            //nowy watek zeby nie blokowac interfejsu
-            Thread t = new Thread(()=>Start());
-            t.Start();
-            //pobranie nr czesci
-            part = partNumber.Text;
-            
+            if (e.KeyCode == Keys.Enter)
+            {
+                Thread t = new Thread(() => Start());
+                t.Start();
+                part = partNumber.Text;
+            }
         }
+
+        //wklejanie tekstu ze schowka
+        private void partNumber_MouseDown(object sender, MouseEventArgs e)
+        {
+            partNumber.Text = Clipboard.GetText();
+        }
+
         void Start()
         {
+            dataGridView1.Invoke(new Action(() => dataGridView1.Rows.Clear()));
+            table.Reset();
             //pobranie danych z aukcji allegro
             string url = "https://allegro.pl/kategoria/motoryzacja?string=" + part + "&order=p&bmatch=baseline-cl-n-aut-1-3-1123";
             //pobranie aukcji z  danego konta allegro VAG24
@@ -51,44 +64,43 @@ namespace WindowsFormsApp1
             doc2.LoadHtml(source2);
 
             //pobranie tytułów aukcji i cen
-            HtmlNodeCollection countParts = doc.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
+
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']/a");
             HtmlNodeCollection nodes2 = doc.DocumentNode.SelectNodes("//span[@class='_611a83b']");
             HtmlNodeCollection countParts2 = doc2.DocumentNode.SelectNodes("//h2[@class='ebc9be2  ']");
 
             if (nodes != null)
             {
-                DataTable table = new DataTable();
+                
                 table.Columns.Add("Opis");
                 table.Columns.Add("Cena");
+                table.Columns.Add("Link");
                 for (int i = 0; i < nodes.Count - 1; i++)
                 {
                     if (nodes[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
-                        table.Rows.Add(nodes[i].InnerText, nodes2[i].InnerText);
+                        table.Rows.Add(nodes[i].InnerText, nodes2[i].InnerText, nodes[i].Attributes["href"].Value);
+                        dataGridView1.Invoke(new Action(() => dataGridView1.Rows.Add(nodes[i].InnerText, nodes2[i].InnerText, nodes[i].Attributes["href"].Value)));
                     }
 
                 }
-                dataGridView1.Invoke(new Action(() => dataGridView1.DataSource = table));
+                
                 dataGridView1.Invoke(new Action(() => dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells)));
             }
-            else { label2.Invoke(new Action(() => label2.Text = "Nie ma takiej części")); }
-
+            
             if (nodes != null)
             {
-                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()));
+                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + dataGridView1.RowCount.ToString()));
                 nodes.Clear();
             }
 
             if (countParts2 != null & nodes != null)
             {
                 //wyswietlenie ilosci aukcji danego konta z danym nr czesci
-                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + countParts.Count.ToString()+"       Nasze aukcje:"+ countParts2.Count.ToString()));
-                countParts.Clear();
+                label2.Invoke(new Action(() => label2.Text = "Ilość wystawionych części:" + dataGridView1.RowCount.ToString() + "       Nasze aukcje:"+ countParts2.Count.ToString()));
                 countParts2.Clear();
             }
             part = "";
-
         }
 
         //funkcja do pobierania dancyh
@@ -106,27 +118,23 @@ namespace WindowsFormsApp1
             }
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && ((DataGridView)sender)[e.ColumnIndex, e.RowIndex].GetType() == typeof(DataGridViewLinkCell))
+            {
+                string url = Convert.ToString(table.Rows[e.RowIndex]["Link"]);
+                Process.Start(url);
+            }
+        }
+
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Clipboard.SetText(dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString());
-        }
-
-        //funkcja do szukania po nacisnieciu ENTER
-        private void partNumber_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                Thread t = new Thread(() => Start());
-                t.Start();
-                part = partNumber.Text;
-            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
-
     }
 }
