@@ -63,9 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WindowsFormsApp1\WindowsFormsApp1.csproj">
+    <ProjectReference Include="..\WindowsFormsApp1\Wyszukiwarka Allegro.csproj">
       <Project>{7c04df70-96cc-4814-86ac-dbc052105813}</Project>
-      <Name>WindowsFormsApp1</Name>
+      <Name>Wyszukiwarka Allegro</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

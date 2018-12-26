@@ -92,23 +92,29 @@
             // 
             // Opis
             // 
+            this.Opis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.Opis.HeaderText = "Opis";
             this.Opis.Name = "Opis";
             this.Opis.ReadOnly = true;
+            this.Opis.Width = 53;
             // 
             // Cena
             // 
+            this.Cena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.Cena.HeaderText = "Cena";
             this.Cena.Name = "Cena";
             this.Cena.ReadOnly = true;
+            this.Cena.Width = 57;
             // 
             // Link
             // 
+            this.Link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.Link.HeaderText = "Link";
             this.Link.Name = "Link";
             this.Link.ReadOnly = true;
             this.Link.Text = "Link";
             this.Link.UseColumnTextForLinkValue = true;
+            this.Link.Width = 33;
             // 
             // Form1
             // 
