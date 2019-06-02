@@ -82,11 +82,11 @@ namespace WindowsFormsApp1
 
         private void MarkClientAuctions()
         {
-            for (int i = 0; i <= clientAuctions.Count - 1; i++)
+            foreach (var auction in clientAuctions)
             {
                 foreach (DataGridViewRow row in auctionListGrid.Rows)
                 {
-                    if (linksTable.Rows[row.Index]["Link"].ToString() == clientAuctions[i].Attributes["href"].Value.ToString())
+                    if (linksTable.Rows[row.Index]["Link"].ToString() == auction.Attributes["href"].Value.ToString())
                         row.DefaultCellStyle.ForeColor = Color.Blue;
                 }
             }
