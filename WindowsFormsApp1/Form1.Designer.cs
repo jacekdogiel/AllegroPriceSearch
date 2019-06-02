@@ -32,12 +32,12 @@
             this.partNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.label2 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.listedAuctionsCount = new System.Windows.Forms.Label();
+            this.auctionListGrid = new System.Windows.Forms.DataGridView();
             this.Opis = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cena = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Link = new System.Windows.Forms.DataGridViewLinkColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.auctionListGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // partNumber
@@ -63,32 +63,32 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // label2
+            // listedAuctionsCount
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Ilość wystawionych części:";
+            this.listedAuctionsCount.AutoSize = true;
+            this.listedAuctionsCount.Location = new System.Drawing.Point(10, 52);
+            this.listedAuctionsCount.Name = "listedAuctionsCount";
+            this.listedAuctionsCount.Size = new System.Drawing.Size(134, 13);
+            this.listedAuctionsCount.TabIndex = 5;
+            this.listedAuctionsCount.Text = "Ilość wystawionych części:";
             // 
-            // dataGridView1
+            // auctionListGrid
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.auctionListGrid.AllowUserToAddRows = false;
+            this.auctionListGrid.AllowUserToDeleteRows = false;
+            this.auctionListGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.auctionListGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Opis,
             this.Cena,
             this.Link});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 72);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(563, 304);
-            this.dataGridView1.TabIndex = 6;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
+            this.auctionListGrid.Location = new System.Drawing.Point(12, 72);
+            this.auctionListGrid.MultiSelect = false;
+            this.auctionListGrid.Name = "auctionListGrid";
+            this.auctionListGrid.ReadOnly = true;
+            this.auctionListGrid.Size = new System.Drawing.Size(563, 304);
+            this.auctionListGrid.TabIndex = 6;
+            this.auctionListGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.auctionListGrid_CellContentClick);
+            this.auctionListGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.auctionListGrid_CellContentDoubleClick);
             // 
             // Opis
             // 
@@ -121,14 +121,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(587, 388);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.auctionListGrid);
+            this.Controls.Add(this.listedAuctionsCount);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.partNumber);
             this.Name = "Form1";
             this.Text = "Wyszukiwarka opisów i cen Allegro";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.auctionListGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,8 +137,8 @@
         private System.Windows.Forms.TextBox partNumber;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label listedAuctionsCount;
+        private System.Windows.Forms.DataGridView auctionListGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn Opis;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cena;
         private System.Windows.Forms.DataGridViewLinkColumn Link;

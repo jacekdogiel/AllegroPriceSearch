@@ -55,7 +55,7 @@ namespace WindowsFormsApp1
 
         private void DisplayData()
         {
-            dataGridView1.Rows.Clear();
+            auctionListGrid.Rows.Clear();
             linksTable.Reset();
             if (allAuctions != null)
             {
@@ -65,37 +65,36 @@ namespace WindowsFormsApp1
                     if (allAuctions[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
                         linksTable.Rows.Add(allAuctions[i].Attributes["href"].Value);
-                        dataGridView1.Rows.Add(allAuctions[i].InnerText,
+                        auctionListGrid.Rows.Add(allAuctions[i].InnerText,
                                                auctionPrices[i].InnerText,
                                                allAuctions[i].Attributes["href"].Value);
                     }
 
                 }
-                label2.Text = "Ilość wystawionych części:" + dataGridView1.RowCount.ToString();
-                MarkClientAuctions();
+                listedAuctionsCount.Text = "Ilość wystawionych części:" + auctionListGrid.RowCount.ToString();
+                if (clientAuctions != null)
+                {
+                    MarkClientAuctions();
+                }
             }
             part = "";
         }
 
         private void MarkClientAuctions()
         {
-            if (clientAuctions != null)
+            for (int i = 0; i <= clientAuctions.Count - 1; i++)
             {
-                for (int i = 0; i <= clientAuctions.Count - 1; i++)
+                foreach (DataGridViewRow row in auctionListGrid.Rows)
                 {
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        if (linksTable.Rows[row.Index]["Link"].ToString() == clientAuctions[i].Attributes["href"].Value.ToString())
-                            row.DefaultCellStyle.ForeColor = Color.Blue;
-                    }
+                    if (linksTable.Rows[row.Index]["Link"].ToString() == clientAuctions[i].Attributes["href"].Value.ToString())
+                        row.DefaultCellStyle.ForeColor = Color.Blue;
                 }
-                label2.Text = "Ilość wystawionych części:" + dataGridView1.RowCount.ToString()
-                + "       Nasze aukcje:" + clientAuctions.Count.ToString();
-
             }
+            listedAuctionsCount.Text = "Ilość wystawionych części:" + auctionListGrid.RowCount.ToString()
+            + "      Nasze aukcje:" + clientAuctions.Count.ToString();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void auctionListGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && ((DataGridView)sender)[e.ColumnIndex, e.RowIndex].GetType() == typeof(DataGridViewLinkCell))
             {
@@ -103,19 +102,14 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void auctionListGrid_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Clipboard.SetText(dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString());
+            Clipboard.SetText(auctionListGrid[e.ColumnIndex, e.RowIndex].Value.ToString());
         }
 
         private void partNumber_MouseDown(object sender, MouseEventArgs e)
         {
-            partNumber.Text = Clipboard.GetText();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            //partNumber.Text = Clipboard.GetText();
         }
     }
 }
