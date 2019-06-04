@@ -9,7 +9,7 @@ namespace WindowsFormsApp1
 {
     public static class AllegroConnection
     {
-        private static HtmlNodeCollection allAuctions { get; set; }
+        private static HtmlNodeCollection auctionTitles { get; set; }
         private static HtmlNodeCollection auctionPrices { get; set; }
         private static HtmlNodeCollection clientAuctions { get; set; }
 
@@ -17,16 +17,16 @@ namespace WindowsFormsApp1
         {
             AllegroAuctionBrowse(part);
             var lstRecords = new List<Record>();
-            if (allAuctions != null)
+            if (auctionTitles != null)
             {
-                for (int i = 0; i <= allAuctions.Count - 1; i++)
+                for (int i = 0; i <= auctionTitles.Count - 1; i++)
                 {
-                    if (allAuctions[i].InnerText.ToLower().Contains(part.ToLower()))
+                    if (auctionTitles[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
                         Record record = new Record();
-                        record.Title = allAuctions[i].InnerText;
+                        record.Title = auctionTitles[i].InnerText;
                         record.Price = auctionPrices[i].InnerText;
-                        record.Link = allAuctions[i].Attributes["href"].Value;
+                        record.Link = auctionTitles[i].Attributes["href"].Value;
                         CheckClientAuctions(i, record);
                         lstRecords.Add(record);
                     }
@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
             if (clientAuctions != null)
                 foreach (var auction in clientAuctions)
                 {
-                    if (allAuctions[index].Attributes["href"].Value == auction.Attributes["href"].Value)
+                    if (auctionTitles[index].Attributes["href"].Value == auction.Attributes["href"].Value)
                     {
                         record.IsClientAuction = true;
                     }
@@ -69,14 +69,22 @@ namespace WindowsFormsApp1
             var loginAllegro = ConfigurationManager.AppSettings["loginAllegro"];
             var titleClass = ConfigurationManager.AppSettings["titleClass"];
             var priceClass = ConfigurationManager.AppSettings["priceClass"];
+            var allAuctionClass = ConfigurationManager.AppSettings["allAuctionClass"];
 
             var url = ConfigurationManager.AppSettings["url"] + part + "&order=p";
             var urlWithLogin = ConfigurationManager.AppSettings["urlWithLogin"] + loginAllegro + "?string=" + part + "&order=p";
 
             try
             {
-                allAuctions = GetAllegroNodes(url, $"//h2[@class='{titleClass}']/a");
-                auctionPrices = GetAllegroNodes(url, $"//span[@class='{priceClass}']");
+                auctionTitles = null;
+                auctionPrices = null;
+                var allAuctions = GetAllegroNodes(url, $"//div[@class='{allAuctionClass}']");
+                if (allAuctions != null)
+                    foreach (var node in allAuctions)
+                    {
+                        auctionTitles = node.SelectNodes($"//h2[@class='{titleClass}']/a");
+                        auctionPrices = node.SelectNodes($"//span[@class='{priceClass}']");
+                    }
                 clientAuctions = GetAllegroNodes(urlWithLogin, $"//h2[@class='{titleClass}']/a");
             }
             catch (Exception ex)
