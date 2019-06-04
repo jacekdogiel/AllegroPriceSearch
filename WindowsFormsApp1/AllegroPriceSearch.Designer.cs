@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp1
 {
-    partial class Form1
+    partial class AllegroPriceSearch
     {
         /// <summary>
         /// Required designer variable.
@@ -34,9 +34,6 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.listedAuctionsCount = new System.Windows.Forms.Label();
             this.auctionListGrid = new System.Windows.Forms.DataGridView();
-            this.Opis = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cena = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Link = new System.Windows.Forms.DataGridViewLinkColumn();
             ((System.ComponentModel.ISupportInitialize)(this.auctionListGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,10 +74,6 @@
             this.auctionListGrid.AllowUserToAddRows = false;
             this.auctionListGrid.AllowUserToDeleteRows = false;
             this.auctionListGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.auctionListGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Opis,
-            this.Cena,
-            this.Link});
             this.auctionListGrid.Location = new System.Drawing.Point(12, 72);
             this.auctionListGrid.MultiSelect = false;
             this.auctionListGrid.Name = "auctionListGrid";
@@ -90,33 +83,7 @@
             this.auctionListGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.auctionListGrid_CellContentClick);
             this.auctionListGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.auctionListGrid_CellContentDoubleClick);
             // 
-            // Opis
-            // 
-            this.Opis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Opis.HeaderText = "Opis";
-            this.Opis.Name = "Opis";
-            this.Opis.ReadOnly = true;
-            this.Opis.Width = 53;
-            // 
-            // Cena
-            // 
-            this.Cena.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Cena.HeaderText = "Cena";
-            this.Cena.Name = "Cena";
-            this.Cena.ReadOnly = true;
-            this.Cena.Width = 57;
-            // 
-            // Link
-            // 
-            this.Link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Link.HeaderText = "Link";
-            this.Link.Name = "Link";
-            this.Link.ReadOnly = true;
-            this.Link.Text = "Link";
-            this.Link.UseColumnTextForLinkValue = true;
-            this.Link.Width = 33;
-            // 
-            // Form1
+            // AllegroPriceSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -125,7 +92,7 @@
             this.Controls.Add(this.listedAuctionsCount);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.partNumber);
-            this.Name = "Form1";
+            this.Name = "AllegroPriceSearch";
             this.Text = "Wyszukiwarka opisów i cen Allegro";
             ((System.ComponentModel.ISupportInitialize)(this.auctionListGrid)).EndInit();
             this.ResumeLayout(false);
@@ -139,9 +106,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label listedAuctionsCount;
         private System.Windows.Forms.DataGridView auctionListGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Opis;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Cena;
-        private System.Windows.Forms.DataGridViewLinkColumn Link;
     }
 }
 
