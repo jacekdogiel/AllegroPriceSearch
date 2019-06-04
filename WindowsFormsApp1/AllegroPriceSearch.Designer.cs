@@ -44,7 +44,6 @@
             this.partNumber.Size = new System.Drawing.Size(262, 20);
             this.partNumber.TabIndex = 3;
             this.partNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.partNumber_KeyDown);
-            this.partNumber.MouseDown += new System.Windows.Forms.MouseEventHandler(this.partNumber_MouseDown);
             // 
             // label1
             // 
@@ -73,6 +72,7 @@
             // 
             this.auctionListGrid.AllowUserToAddRows = false;
             this.auctionListGrid.AllowUserToDeleteRows = false;
+            this.auctionListGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.auctionListGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.auctionListGrid.Location = new System.Drawing.Point(12, 72);
             this.auctionListGrid.MultiSelect = false;

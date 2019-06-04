@@ -17,27 +17,35 @@ namespace WindowsFormsApp1
         {
             AllegroAuctionBrowse(part);
             var lstRecords = new List<Record>();
-            for (int i = 0; i <= allAuctions.Count - 1; i++)
+            if (allAuctions != null)
             {
-                if (allAuctions[i].InnerText.ToLower().Contains(part.ToLower()))
+                for (int i = 0; i <= allAuctions.Count - 1; i++)
                 {
-                    Record record = new Record();
-                    record.Title = allAuctions[i].InnerText;
-                    record.Price = auctionPrices[i].InnerText;
-                    record.Link = allAuctions[i].Attributes["href"].Value;
-
-                    foreach (var auction in clientAuctions)
+                    if (allAuctions[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
-                        if (allAuctions[i].Attributes["href"].Value == auction.Attributes["href"].Value)
-                        {
-                            record.IsClientAuction = true;
-                        }
+                        Record record = new Record();
+                        record.Title = allAuctions[i].InnerText;
+                        record.Price = auctionPrices[i].InnerText;
+                        record.Link = allAuctions[i].Attributes["href"].Value;
+                        CheckClientAuctions(i, record);
+                        lstRecords.Add(record);
                     }
-                    lstRecords.Add(record);
-                }
 
+                }
             }
             return lstRecords;
+        }
+
+        private static void CheckClientAuctions(int index, Record record)
+        {
+            if (clientAuctions != null)
+                foreach (var auction in clientAuctions)
+                {
+                    if (allAuctions[index].Attributes["href"].Value == auction.Attributes["href"].Value)
+                    {
+                        record.IsClientAuction = true;
+                    }
+                }
         }
 
         private static HtmlNodeCollection GetAllegroNodes(string url, string xpath)
