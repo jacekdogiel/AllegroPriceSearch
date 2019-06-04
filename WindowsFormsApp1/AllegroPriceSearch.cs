@@ -11,32 +11,39 @@ namespace WindowsFormsApp1
     public partial class AllegroPriceSearch : Form
     {
         string part;
+        Stopwatch stopwatch;
         public List<Record> records { get; set; }
 
         public AllegroPriceSearch()
         {
             InitializeComponent();
+            stopwatch = new Stopwatch();
         }
 
         private async void partNumber_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
+                stopwatch.Start();
                 part = partNumber.Text;
                 await Task.Run(() => records = AllegroConnection.GetAuctionRecords(part));
+                stopwatch.Stop();
+                var elapsed = stopwatch.Elapsed;
                 DisplayData();
             }
         }
 
         private void DisplayData()
         {
+
             auctionListGrid.DataSource = records;
             DisplayNumberOfAuctions();
             CreateLinkCells();
             MarkClientAuctions();
-            auctionListGrid.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            auctionListGrid.Columns[3].Visible = false;
+            auctionListGrid.Columns["Link"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            auctionListGrid.Columns["IsClientAuction"].Visible = false;
             part = "";
+
         }
 
         private void DisplayNumberOfAuctions()
@@ -50,10 +57,10 @@ namespace WindowsFormsApp1
             foreach (DataGridViewRow row in auctionListGrid.Rows)
             {
                 DataGridViewLinkCell linkCell = new DataGridViewLinkCell();
-                linkCell.Value = row.Cells[2].Value;
-                row.Cells[2] = linkCell;
-                row.Cells[2].Tag = row.Cells[2].Value;
-                row.Cells[2].Value = "Link";
+                linkCell.Value = row.Cells["Link"].Value;
+                row.Cells["Link"] = linkCell;
+                row.Cells["Link"].Tag = row.Cells[2].Value;
+                row.Cells["Link"].Value = "Link";
             }
         }
 
@@ -61,14 +68,14 @@ namespace WindowsFormsApp1
         {
             foreach (DataGridViewRow row in auctionListGrid.Rows)
             {
-                if ((bool)row.Cells[3].Value == true)
+                if ((bool)row.Cells["IsClientAuction"].Value == true)
                     row.DefaultCellStyle.BackColor = Color.LightBlue;
             }
         }
 
         private void auctionListGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex == 2)
+            if (e.RowIndex >= 0 && e.ColumnIndex == auctionListGrid.Columns["Link"].Index)
             {
                 Process.Start(Convert.ToString(auctionListGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Tag.ToString()));
             }

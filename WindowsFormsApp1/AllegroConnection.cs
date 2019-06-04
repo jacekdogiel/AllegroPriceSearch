@@ -13,9 +13,18 @@ namespace WindowsFormsApp1
         private static HtmlNodeCollection auctionPrices { get; set; }
         private static HtmlNodeCollection clientAuctions { get; set; }
 
+        private static string loginAllegro;
+        private static string titleClass;
+        private static string priceClass;
+        private static string allAuctionClass;
+
+        private static string url;
+        private static string urlWithLogin;
+
+
         public static List<Record> GetAuctionRecords(string part)
         {
-            AllegroAuctionBrowse(part);
+            AuctionBrowse(part);
             var lstRecords = new List<Record>();
             if (auctionTitles != null)
             {
@@ -23,7 +32,7 @@ namespace WindowsFormsApp1
                 {
                     if (auctionTitles[i].InnerText.ToLower().Contains(part.ToLower()))
                     {
-                        Record record = new Record();
+                        var record = new Record();
                         record.Title = auctionTitles[i].InnerText;
                         record.Price = auctionPrices[i].InnerText;
                         record.Link = auctionTitles[i].Attributes["href"].Value;
@@ -48,7 +57,7 @@ namespace WindowsFormsApp1
                 }
         }
 
-        private static HtmlNodeCollection GetAllegroNodes(string url, string xpath)
+        private static HtmlNodeCollection GetDocumentNodes(string url, string xpath)
         {
             try
             {
@@ -64,33 +73,48 @@ namespace WindowsFormsApp1
                 throw new AllegroException("Could not load data from Allegro", ex);
             }
         }
-        private static void AllegroAuctionBrowse(string part)
-        {
-            var loginAllegro = ConfigurationManager.AppSettings["loginAllegro"];
-            var titleClass = ConfigurationManager.AppSettings["titleClass"];
-            var priceClass = ConfigurationManager.AppSettings["priceClass"];
-            var allAuctionClass = ConfigurationManager.AppSettings["allAuctionClass"];
 
-            var url = ConfigurationManager.AppSettings["url"] + part + "&order=p";
-            var urlWithLogin = ConfigurationManager.AppSettings["urlWithLogin"] + loginAllegro + "?string=" + part + "&order=p";
+        private static void AuctionBrowse(string part)
+        {
+            GetConfiguration(part);
 
             try
             {
-                auctionTitles = null;
-                auctionPrices = null;
-                var allAuctions = GetAllegroNodes(url, $"//div[@class='{allAuctionClass}']");
-                if (allAuctions != null)
-                    foreach (var node in allAuctions)
-                    {
-                        auctionTitles = node.SelectNodes($"//h2[@class='{titleClass}']/a");
-                        auctionPrices = node.SelectNodes($"//span[@class='{priceClass}']");
-                    }
-                clientAuctions = GetAllegroNodes(urlWithLogin, $"//h2[@class='{titleClass}']/a");
+                ClearAuctions();
+                SelectAuctionNodes();
             }
             catch (Exception ex)
             {
                 throw new AllegroException("Could not load nodes from Allegro", ex);
             }
+        }
+        private static void GetConfiguration(string part)
+        {
+            loginAllegro = ConfigurationManager.AppSettings["loginAllegro"];
+            titleClass = ConfigurationManager.AppSettings["titleClass"];
+            priceClass = ConfigurationManager.AppSettings["priceClass"];
+            allAuctionClass = ConfigurationManager.AppSettings["allAuctionClass"];
+
+            url = ConfigurationManager.AppSettings["url"] + part + "&order=p";
+            urlWithLogin = ConfigurationManager.AppSettings["urlWithLogin"] + loginAllegro + "?string=" + part + "&order=p";
+        }
+
+        private static void SelectAuctionNodes()
+        {
+            var allAuctions = GetDocumentNodes(url, $"//div[@class='{allAuctionClass}']");
+            if (allAuctions != null)
+                foreach (var node in allAuctions)
+                {
+                    auctionTitles = node.SelectNodes($"//h2[@class='{titleClass}']/a");
+                    auctionPrices = node.SelectNodes($"//span[@class='{priceClass}']");
+                }
+            clientAuctions = GetDocumentNodes(urlWithLogin, $"//h2[@class='{titleClass}']/a");
+        }
+
+        private static void ClearAuctions()
+        {
+            auctionTitles = null;
+            auctionPrices = null;
         }
     }
 }
