@@ -13,13 +13,13 @@ namespace AllegroPriceSearch
         private static HtmlNodeCollection auctionPrices { get; set; }
         private static HtmlNodeCollection clientAuctions { get; set; }
 
-        private static string loginAllegro;
-        private static string titleClass;
-        private static string priceClass;
-        private static string allAuctionClass;
+        private static string loginAllegro { get; set; }
+        private static string titleClass { get; set; }
+        private static string priceClass { get; set; }
+        private static string allAuctionClass { get; set; }
 
-        private static string url;
-        private static string urlWithLogin;
+        private static string url { get; set; }
+        private static string urlWithLogin { get; set; }
 
 
         public static List<Record> GetAuctionRecords(string part)

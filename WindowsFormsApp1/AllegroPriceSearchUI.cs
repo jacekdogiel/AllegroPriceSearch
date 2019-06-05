@@ -10,9 +10,9 @@ namespace AllegroPriceSearch
 {
     public partial class AllegroPriceSearchUI : Form
     {
-        string part;
-        Stopwatch stopwatch;
-        public List<Record> records { get; set; }
+        private string part { get; set; }
+        private Stopwatch stopwatch { get; set; }
+        private List<Record> records { get; set; }
 
         public AllegroPriceSearchUI()
         {
