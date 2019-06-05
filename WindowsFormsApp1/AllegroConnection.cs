@@ -25,6 +25,11 @@ namespace WindowsFormsApp1
         public static List<Record> GetAuctionRecords(string part)
         {
             AuctionBrowse(part);
+            return CreateRecords(part);
+        }
+
+        private static List<Record> CreateRecords(string part)
+        {
             var lstRecords = new List<Record>();
             if (auctionTitles != null)
             {
@@ -42,6 +47,7 @@ namespace WindowsFormsApp1
 
                 }
             }
+
             return lstRecords;
         }
 
