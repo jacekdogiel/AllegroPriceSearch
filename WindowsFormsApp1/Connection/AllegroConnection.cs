@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 
-namespace WindowsFormsApp1
+namespace AllegroPriceSearch
 {
     public static class AllegroConnection
     {

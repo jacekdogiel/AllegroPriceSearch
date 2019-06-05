@@ -80,19 +80,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllegroException.cs" />
-    <Compile Include="AllegroConnection.cs" />
-    <Compile Include="AllegroPriceSearch.cs">
+    <Compile Include="Connection\AllegroConnection.cs" />
+    <Compile Include="Connection\AllegroException.cs" />
+    <Compile Include="AllegroPriceSearchUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AllegroPriceSearch.Designer.cs">
-      <DependentUpon>AllegroPriceSearch.cs</DependentUpon>
+    <Compile Include="AllegroPriceSearchUI.Designer.cs">
+      <DependentUpon>AllegroPriceSearchUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Record.cs" />
-    <EmbeddedResource Include="AllegroPriceSearch.resx">
-      <DependentUpon>AllegroPriceSearch.cs</DependentUpon>
+    <Compile Include="Model\Record.cs" />
+    <EmbeddedResource Include="AllegroPriceSearchUI.resx">
+      <DependentUpon>AllegroPriceSearchUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -6,15 +6,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace AllegroPriceSearch
 {
-    public partial class AllegroPriceSearch : Form
+    public partial class AllegroPriceSearchUI : Form
     {
         string part;
         Stopwatch stopwatch;
         public List<Record> records { get; set; }
 
-        public AllegroPriceSearch()
+        public AllegroPriceSearchUI()
         {
             InitializeComponent();
             stopwatch = new Stopwatch();

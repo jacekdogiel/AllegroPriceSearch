@@ -1,6 +1,6 @@
-﻿namespace WindowsFormsApp1
+﻿namespace AllegroPriceSearch
 {
-    partial class AllegroPriceSearch
+    partial class AllegroPriceSearchUI
     {
         /// <summary>
         /// Required designer variable.
