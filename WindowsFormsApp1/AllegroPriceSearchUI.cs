@@ -48,8 +48,7 @@ namespace AllegroPriceSearch
 
         private void DisplayNumberOfAuctions()
         {
-            listedAuctionsCount.Text = "Ilość wystawionych części:" + records.Count().ToString()
-                + "         Nasze aukcje:" + records.Where(r => r.IsClientAuction == true).Count().ToString();
+            listedAuctionsCount.Text = $"Ilość wystawionych części:{ records.Count().ToString()}        Nasze aukcje:{ records.Where(r => r.IsClientAuction == true).Count().ToString()}";
         }
 
         private void CreateLinkCells()
