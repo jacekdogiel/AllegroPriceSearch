@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Net;
+using System.Diagnostics;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AllegroPriceSearch
 {
@@ -12,6 +13,8 @@ namespace AllegroPriceSearch
         private static HtmlNodeCollection auctionTitles { get; set; }
         private static HtmlNodeCollection auctionPrices { get; set; }
         private static HtmlNodeCollection clientAuctions { get; set; }
+        private static HtmlNodeCollection allAuctions { get; set; }
+
 
         private static string loginAllegro { get; set; }
         private static string titleClass { get; set; }
@@ -65,18 +68,20 @@ namespace AllegroPriceSearch
 
         private static HtmlNodeCollection GetDocumentNodes(string url, string xpath)
         {
-            try
+            using (var client = new HttpClient())
             {
-                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                var source = new HttpClient().GetAsync(url).Result.Content.ReadAsStringAsync().Result;
-                var document = new HtmlDocument();
-                document.LoadHtml(source);
+                try
+                {
+                    var source = client.GetAsync(url).Result.Content.ReadAsStringAsync().Result;
+                    var document = new HtmlDocument();
+                    document.LoadHtml(source);
 
-                return document.DocumentNode.SelectNodes(xpath);
-            }
-            catch (Exception ex)
-            {
-                throw new AllegroException("Could not load data from Allegro", ex);
+                    return document.DocumentNode.SelectNodes(xpath);
+                }
+                catch (Exception ex)
+                {
+                    throw new AllegroException("Could not load data from Allegro", ex);
+                }
             }
         }
 
@@ -107,14 +112,22 @@ namespace AllegroPriceSearch
 
         private static void SelectAuctionNodes()
         {
-            var allAuctions = GetDocumentNodes(url, $"//div[@class='{allAuctionClass}']");
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var task1 = Task.Run(() => allAuctions = GetDocumentNodes(url, $"//div[@class='{allAuctionClass}']"));
+            var task2 = Task.Run(() => clientAuctions = GetDocumentNodes(urlWithLogin, $"//h2[@class='{titleClass}']/a"));
+
+            Task.WaitAll(task1, task2);
+
             if (allAuctions != null)
                 foreach (var node in allAuctions)
                 {
                     auctionTitles = node.SelectNodes($"//h2[@class='{titleClass}']/a");
                     auctionPrices = node.SelectNodes($"//span[@class='{priceClass}']");
                 }
-            clientAuctions = GetDocumentNodes(urlWithLogin, $"//h2[@class='{titleClass}']/a");
+            stopwatch.Stop();
+            var elapsed = stopwatch.Elapsed;
         }
 
         private static void ClearAuctions()

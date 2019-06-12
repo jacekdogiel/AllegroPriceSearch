@@ -11,19 +11,18 @@ namespace AllegroPriceSearch
     public partial class AllegroPriceSearchUI : Form
     {
         private string part { get; set; }
-        private Stopwatch stopwatch { get; set; }
         private List<Record> records { get; set; }
 
         public AllegroPriceSearchUI()
         {
             InitializeComponent();
-            stopwatch = new Stopwatch();
         }
 
         private async void partNumber_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
+                var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 part = partNumber.Text;
                 await Task.Run(() => records = AllegroConnection.GetAuctionRecords(part));
